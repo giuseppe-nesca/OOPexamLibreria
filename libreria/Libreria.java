@@ -1,11 +1,15 @@
 package libreria;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -116,5 +120,38 @@ public class Libreria {
     }
     
     public void leggi(String file){
+    	
+    try(BufferedReader br = new BufferedReader(new FileReader(file))){
+    	String buffer;
+    	
+			while ((buffer = br.readLine()) != null) {
+				try {
+					StringTokenizer st = new StringTokenizer(buffer, ";");
+					String type = st.nextToken();
+					if (type.equals("E")) {
+						String nome = st.nextToken();
+						String tempoConsegna = st.nextToken();
+						String email = st.nextToken();
+						
+						creaEditore(nome, new Integer(tempoConsegna), email);
+					}
+					if (type.equals("L")) {
+						String titolo = st.nextToken();
+						String autore = st.nextToken();
+						int anno = new Integer(st.nextToken());
+						double prezzo = new Double(st.nextToken());
+						String nomeEditore = st.nextToken();
+						int quantita = new Integer(st.nextToken());
+						
+						creaLibro(titolo, autore, anno, prezzo, nomeEditore);
+					}
+				} catch (Exception e) {
+					continue;
+				}
+			}
+    	
+    	
+    }catch(Exception e){
+    	}
     }
 }
