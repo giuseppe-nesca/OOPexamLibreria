@@ -43,15 +43,12 @@ public class Libreria {
     	Editore editore;
     	Libro libro;
     	
-    	try {
+    	
 			editore = editori.get(nomeEditore);
 			if ( editore == null ){
 				throw new EditoreInesistente();
 			}
-		} catch (EditoreInesistente e) {
-			System.out.println("editore inesistente.");
-			return null;
-		}
+		
     	libro = new Libro(titolo, autore, anno ,prezzo, editore, this);
     	libriPerAutore.put(autore, libro);
     	libriPerTitolo.put(titolo, libro);
@@ -93,20 +90,21 @@ public class Libreria {
     				return l1.getVenditeSettimana(settimana) - l2.getVenditeSettimana(settimana);
     			}
 			})
-			.map(l -> l.toString())
+			//.map(l -> l.toString())
 			.collect(Collectors.toList());
     }
     
     public Collection getClassificaMese(final int mese){
-        return libriPerTitolo.values().stream()
-        		.sorted(new Comparator<Libro>(){
-        			@Override
-        			public int compare(Libro l1, Libro l2){
-        				return l1.getVenditeMese(mese) - l2.getVenditeMese(mese);
-        			};
-        		})
-        		.map(l -> l.toString())
-        		.collect(Collectors.toList());
+        return
+        	libriPerTitolo.values().stream()
+        	.sorted(new Comparator<Libro>(){
+        		@Override
+        		public int compare(Libro l1, Libro l2){
+        			return l1.getVenditeMese(mese) - l2.getVenditeMese(mese);
+        		};
+        	})
+        		//.map(l -> l.toString())
+        	.collect(Collectors.toList());
     }
     
     public Collection getOrdini(){
@@ -143,7 +141,8 @@ public class Libreria {
 						String nomeEditore = st.nextToken();
 						int quantita = new Integer(st.nextToken());
 						
-						creaLibro(titolo, autore, anno, prezzo, nomeEditore);
+						creaLibro(titolo, autore, anno, prezzo, nomeEditore).setQuantita(quantita);
+						
 					}
 				} catch (Exception e) {
 					continue;

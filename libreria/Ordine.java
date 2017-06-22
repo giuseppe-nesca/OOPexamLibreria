@@ -39,6 +39,7 @@ public class Ordine {
     
     public void setConsegnato(boolean bool){
     	consegnato = bool;
+    	libro.setInAttesa(false);
     }
     
     public String toString(){

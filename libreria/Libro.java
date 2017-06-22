@@ -16,6 +16,7 @@ public class Libro {
 	private int[] venditeSettimanali = new int[numeroSettimane];
 	private int soglia;
 	private int quantitaRiordino;
+	private boolean inAttesa = false;
 	
 	public Libro(String titolo, String autore, int anno, double prezzo, Editore editore, Libreria libreria){
 		this.libreria = libreria;
@@ -64,19 +65,22 @@ public class Libro {
     		return;
     	}
     	setQuantita( getQuantita() - 1 );
-    	if(quantita <= soglia){
-    		libreria.getOrdini().add(new Ordine(editore, this, quantitaRiordino, libreria.getOrdini().size()));
+    	if(quantita <= soglia && inAttesa == false){
+    		libreria.getOrdini().add(
+    				new Ordine(editore, this, quantitaRiordino, libreria.getOrdini().size())
+    				);
+    		inAttesa = true;
     	}
-    	venditeMensili[mese]++;
-    	venditeSettimanali[settimana]++;
+    	venditeMensili[mese-1]++;
+    	venditeSettimanali[settimana-1]++;
     }
     
     public int getVenditeSettimana(int settimana){
-    	return venditeSettimanali[settimana];
+    	return venditeSettimanali[settimana-1];
     }
     
     public int getVenditeMese(int mese) {
-    	return venditeSettimanali[mese];
+    	return venditeSettimanali[mese-1];
 		
 	}
     
@@ -87,5 +91,9 @@ public class Libro {
     
     public String toString(){
     	return getTitolo() + " - " + getAutore();
+    }
+    
+    public void setInAttesa(boolean bool){
+    	inAttesa = bool;
     }
 }
